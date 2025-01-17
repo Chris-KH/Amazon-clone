@@ -1,8 +1,13 @@
 import { products } from '../data/products.js'
 
-const productGrid = document.querySelector('.products-grid');
+
 
 function generateProductContainer() {
+    const productGrid = document.createElement('div');
+    productGrid.classList = 'products-grid';
+
+    document.querySelector('.main').appendChild(productGrid);
+
     products.forEach(product => {
         //Container
         const container = document.createElement('div');
