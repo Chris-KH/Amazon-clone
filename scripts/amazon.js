@@ -1,7 +1,7 @@
-import { products } from '../data/products.js'
+import { products } from "../data/products.js";
+// let products = [];
 
-
-
+generateProductContainer();
 function generateProductContainer() {
     const productGrid = document.createElement('div');
     productGrid.classList = 'products-grid';
@@ -95,4 +95,12 @@ function generateProductContainer() {
     });
 }
 
-generateProductContainer();
+
+// fetch('../backend/products.json') 
+//   .then(response => response.json())  
+//   .then(data => {
+//     products = data; 
+//     console.log(products); 
+//     generateProductContainer();
+//   })
+//   .catch(error => console.error('Error:', error));
