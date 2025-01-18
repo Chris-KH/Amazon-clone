@@ -1,4 +1,4 @@
-import { cartProducts } from "../data/cart.js";
+import { cartProducts, removeProductFromCart } from "../data/cart.js";
 
 
 export function getNumberOfItems() {
@@ -21,12 +21,14 @@ export function addProductToCart(product) {
     }
 
     if (!added) cartProducts.push(product);
-
+    
     localStorage.setItem('cartProduct', JSON.stringify(cartProducts));
 }
 
 if (window.location.pathname === '/checkout.html') {
     generateCheckOut();
+    addEventForDeleteProduct();
+    addEventForUpdateProduct();
 }
 
 
@@ -52,8 +54,8 @@ function generateCheckOut() {
                         </div>
                         <div class="product-quantity">
                             <span>Quantity: <span class="quantity-label">${product.quantity}</span></span>
-                            <span class="update-quantity-link link-primary">Update</span>
-                            <span class="delete-quantity-link link-primary">Delete</span>
+                            <span class="update-quantity-link link-primary" data-product-id="${product.productId}">Update</span>
+                            <span class="delete-quantity-link link-primary" data-product-id="${product.productId}">Delete</span>
                         </div>
                     </div>
 
@@ -106,8 +108,30 @@ function generateCheckOut() {
     orderSumary.innerHTML = html;
 
     //Update header
+    updateCheckoutHeader();
+}
+
+function updateCheckoutHeader() {
     const numItems = getNumberOfItems();
     const middleHeader = document.querySelector('.return-to-home-link');
     if (numItems <= 1) middleHeader.innerText = `${numItems} item`;
     else middleHeader.innerText = `${numItems} items`;
+}
+
+function addEventForDeleteProduct() {
+    const deleteButtons = document.querySelectorAll('.delete-quantity-link');
+
+    deleteButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const productContainer = button.closest('.cart-item-container');
+            
+            removeProductFromCart(button.dataset.productId);
+            productContainer.remove();
+            updateCheckoutHeader();
+        });
+    });
+}
+
+function addEventForUpdateProduct() {
+
 }
