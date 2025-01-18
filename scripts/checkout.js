@@ -1,6 +1,5 @@
 import { cartProducts } from "../data/cart.js";
 
-//localStorage.clear();
 
 export function getNumberOfItems() {
     let count = 0;
@@ -32,7 +31,7 @@ if (window.location.pathname === '/checkout.html') {
 
 
 function generateCheckOut() {
-    let html = `        <div class="order-summary">`;
+    let html = ``;
     let cnt = 1;
     cartProducts.forEach(product => {
         html += `
@@ -99,15 +98,12 @@ function generateCheckOut() {
                 </div>
             </div>
         `;
-
-
         cnt++;
     });
-    html += '</div>';
 
     //Update grid
-    const checkoutGrid = document.querySelector('.checkout-grid');
-    checkoutGrid.innerHTML = html + checkoutGrid.innerHTML;
+    const orderSumary = document.querySelector('.order-summary');
+    orderSumary.innerHTML = html;
 
     //Update header
     const numItems = getNumberOfItems();
