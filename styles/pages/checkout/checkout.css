@@ -44,9 +44,10 @@
 
 .cart-item-container,
 .payment-summary {
-  border: 1px solid rgb(222, 222, 222);
-  border-radius: 4px;
-  padding: 18px;
+    width: 100%;
+    border: 1px solid rgb(222, 222, 222);
+    border-radius: 4px;
+    padding: 18px;
 }
 
 .cart-item-container {
@@ -140,72 +141,72 @@
 }
 
 .delivery-option {
-  display: grid;
-  grid-template-columns: 24px 1fr;
-  margin-bottom: 12px;
-  cursor: pointer;
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    margin-bottom: 12px;
+    cursor: pointer;
 }
 
 .delivery-option-input {
-  margin-left: 0px;
-  cursor: pointer;
+    margin-left: 0px;
+    cursor: pointer;
 }
 
 .delivery-option-date {
-  color: rgb(0, 118, 0);
-  font-weight: 500;
-  margin-bottom: 3px;
+    color: rgb(0, 118, 0);
+    font-weight: 500;
+    margin-bottom: 3px;
 }
 
 .delivery-option-price {
-  color: rgb(120, 120, 120);
-  font-size: 15px;
+    color: rgb(120, 120, 120);
+    font-size: 15px;
 }
 
 .payment-summary-title {
-  font-weight: 700;
-  font-size: 18px;
-  margin-bottom: 12px;
+    font-weight: 700;
+    font-size: 18px;
+    margin-bottom: 12px;
 }
 
 .payment-summary-row {
-  display: grid;
-  /* 1fr auto; means the width of the 2nd column will be
-     determined by the elements inside the column (auto).
-     The 1st column will take up the remaining space. */
-  grid-template-columns: 1fr auto;
+    display: grid;
+    /* 1fr auto; means the width of the 2nd column will be
+        determined by the elements inside the column (auto).
+        The 1st column will take up the remaining space. */
+    grid-template-columns: 1fr auto;
 
-  font-size: 15px;
-  margin-bottom: 9px;
+    font-size: 15px;
+    margin-bottom: 9px;
 }
 
 .payment-summary-money {
-  text-align: right;
+    text-align: right;
 }
 
 .subtotal-row .payment-summary-money {
-  border-top: 1px solid rgb(222, 222, 222);
+    border-top: 1px solid rgb(222, 222, 222);
 }
 
 .subtotal-row div {
-  padding-top: 9px;
+    padding-top: 9px;
 }
 
 .total-row {
-  color: rgb(177, 39, 4);
-  font-weight: 700;
-  font-size: 18px;
+    color: rgb(177, 39, 4);
+    font-weight: 700;
+    font-size: 18px;
 
-  border-top: 1px solid rgb(222, 222, 222);
-  padding-top: 18px;
+    border-top: 1px solid rgb(222, 222, 222);
+    padding-top: 18px;
 }
 
 .place-order-button {
-  width: 100%;
-  padding-top: 12px;
-  padding-bottom: 12px;
-  border-radius: 8px;
+    width: 100%;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    border-radius: 8px;
 
-  margin-top: 11px;
-  margin-bottom: 15px;
+    margin-top: 11px;
+    margin-bottom: 15px;
 }
