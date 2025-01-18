@@ -1,5 +1,5 @@
 import { products } from "../data/products.js";
-import { getNumberOfItems, addProductToCart } from "../scripts/cart.js"
+import { getNumberOfItems, addProductToCart } from "./checkout.js"
 
 generateProductContainer();
 addEventForAddButton();
@@ -61,15 +61,23 @@ function generateProductContainer() {
 
     const cartQuantity = document.querySelector('.cart-quantity');
     cartQuantity.innerHTML = getNumberOfItems();
-    console.log(new Date());
 }
 
+let setTimeoutID = null;
 function addEventForAddButton() {
     document.querySelectorAll('.add-to-cart-button').forEach(addBut => {
         addBut.addEventListener('click', () => {
             //Get quantity
             const productContainer = addBut.closest('.product-container');
             const quantity = productContainer.querySelector('.quantity-selector').value;
+
+            //Set added
+            const addedToCart = productContainer.querySelector('.added-to-cart');
+            addedToCart.classList.add('is-added-to-cart');
+            clearTimeout(setTimeoutID);
+            setTimeoutID = setTimeout(() => {
+                addedToCart.classList.remove('is-added-to-cart');
+            }, 3000);
 
             //Add product to cart
             const cartQuantity = document.querySelector('.cart-quantity');

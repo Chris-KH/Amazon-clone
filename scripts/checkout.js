@@ -1,5 +1,4 @@
-let cartProducts = JSON.parse(localStorage.getItem('cartProduct'));
-if (cartProducts === null) cartProducts = [];
+import { cartProducts } from "../data/cart.js";
 
 //localStorage.clear();
 
@@ -30,6 +29,7 @@ export function addProductToCart(product) {
 if (window.location.pathname === '/checkout.html') {
     generateCheckOut();
 }
+
 
 function generateCheckOut() {
     let html = `        <div class="order-summary">`;

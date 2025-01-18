@@ -96,62 +96,67 @@
 }
 
 .product-name {
-  width: 100%;
-  height: auto;
-  margin-bottom: 5px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 5px;
 }
 
 .product-rating-container {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
 }
 
 .product-rating-stars {
-  width: 100px;
-  margin-right: 6px;
+    width: 100px;
+    margin-right: 6px;
 }
 
 .product-rating-count {
-  color: rgb(1, 124, 182);
-  cursor: pointer;
-  margin-top: 3px;
+    color: rgb(1, 124, 182);
+    cursor: pointer;
+    margin-top: 3px;
 }
 
 .product-price {
-  font-weight: 700;
-  margin-bottom: 10px;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 
 .product-quantity-container {
-  margin-bottom: 17px;
+    margin-bottom: 17px;
 }
 
 .product-spacer {
-  flex: 1;
+    flex: 1;
 }
 
 .added-to-cart {
-  color: rgb(6, 125, 98);
-  font-size: 16px;
+    color: rgb(6, 125, 98);
+    font-size: 16px;
 
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 8px;
 
-  /* At first, the "Added to cart" message will
-     be invisible. Use JavaScript to change the
-     opacity and make it visible. */
-  opacity: 0;
+    /* At first, the "Added to cart" message will
+        be invisible. Use JavaScript to change the
+        opacity and make it visible. */
+    opacity: 0;
+    transition: opacity 0.2s;
 }
 
 .added-to-cart img {
-  height: 20px;
-  margin-right: 5px;
+    height: 20px;
+    margin-right: 5px;
+}
+
+.is-added-to-cart {
+    opacity: 1;
 }
 
 .add-to-cart-button {
-  width: 100%;
-  padding: 8px;
-  border-radius: 50px;
+    width: 100%;
+    padding: 8px;
+    border-radius: 50px;
 }
