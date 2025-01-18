@@ -1,4 +1,5 @@
 import { cartProducts, removeProductFromCart } from "../data/cart.js";
+import { getDate } from "./day.js";
 
 
 export function getNumberOfItems() {
@@ -39,7 +40,7 @@ function generateCheckOut() {
         html += `
             <div class="cart-item-container">
                 <div class="delivery-date">
-                    Delivery date: Tuesday, June 21
+                    Delivery date: ${getDate(10)}
                 </div>
 
                 <div class="cart-item-details-grid">
@@ -67,7 +68,7 @@ function generateCheckOut() {
                             <input type="radio" checked class="delivery-option-input" name="delivery-option-${cnt}">
                             <div>
                                 <div class="delivery-option-date">
-                                    Tuesday, June 21
+                                    ${getDate(10)}
                                 </div>
                                 <div class="delivery-option-price">
                                     FREE Shipping
@@ -78,7 +79,7 @@ function generateCheckOut() {
                             <input type="radio" class="delivery-option-input" name="delivery-option-${cnt}">
                             <div>
                                 <div class="delivery-option-date">
-                                    Wednesday, June 15
+                                    ${getDate(7)}
                                 </div>
                                 <div class="delivery-option-price">
                                     $4.99 - Shipping
@@ -89,7 +90,7 @@ function generateCheckOut() {
                             <input type="radio" class="delivery-option-input" name="delivery-option-${cnt}">
                             <div>
                                 <div class="delivery-option-date">
-                                    Monday, June 13
+                                    ${getDate(3)}
                                 </div>
                                 <div class="delivery-option-price">
                                     $9.99 - Shipping
