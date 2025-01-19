@@ -182,7 +182,7 @@ function addEventForUpdateProduct() {
                 let inputTagQuantity = document.createElement('input');
                 inputTagQuantity.type = "number";
                 inputTagQuantity.classList = "quantity-input";
-                inputTagQuantity.value = Number(quantityLabel.innerText);
+                inputTagQuantity.value = quantityLabel.innerText.trim();
                 inputTagQuantity.min = 0;
                 inputTagQuantity.addEventListener('keypress', (event) => {
                     if (event.key === 'Enter') {
