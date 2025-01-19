@@ -1,5 +1,5 @@
 import { products } from "../data/products.js";
-import { getNumberOfItems, addProductToCart } from "./checkout.js"
+import { getNumberOfItems, addProductToCart } from "../data/cart.js"
 
 generateProductContainer();
 addEventForAddButton();

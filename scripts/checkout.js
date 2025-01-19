@@ -1,38 +1,11 @@
-import { cartProducts, removeProductFromCart, deliveryOptions } from "../data/cart.js";
+import { cartProducts, removeProductFromCart, deliveryOptions, getNumberOfItems } from "../data/cart.js";
 import { getDate } from "./day.js";
 
-
-export function getNumberOfItems() {
-    let count = 0;
-    cartProducts.forEach(product => {
-        count += Number(product.quantity);
-    });
-
-    return count;
-}
-
-export function addProductToCart(product) {
-    let added = false;
-    for (let i = 0; i < cartProducts.length; i++) {
-        if (cartProducts[i].productId === product.productId) {
-            cartProducts[i].quantity = Number(cartProducts[i].quantity) + Number(product.quantity);
-            added = true;
-            break;
-        }
-    }
-
-    if (!added) cartProducts.push(product);
-    
-    localStorage.setItem('cartProduct', JSON.stringify(cartProducts));
-}
-
-if (window.location.pathname === '/checkout.html') {
-    generateOrderSummary();
-    addEventForDeleteProduct();
-    addEventForUpdateProduct();
-    addEventForDeliveryOption();
-}
-
+generateOrderSummary();
+generatePaymentSummary();
+addEventForDeleteProduct();
+addEventForUpdateProduct();
+addEventForDeliveryOption();
 
 function generateOrderSummary() {
     let html = ``;
@@ -86,6 +59,64 @@ function generateOrderSummary() {
     updateCheckoutHeader();
 }
 
+function generatePaymentSummary() {
+    let cost = 0;
+    cartProducts.forEach(product => {
+        cost += Number(product.quantity) * Number(product.priceCents);
+    });
+
+    let shippingCost = 0;
+    cartProducts.forEach(product => {
+        deliveryOptions.forEach(option => {
+            if (product.deliveryOption === option.optionId) {
+                shippingCost += (option.priceCents === 'FREE' ? 0 : Number(option.priceCents));
+            }
+        });
+    });
+
+    let beforeTax = (cost + shippingCost);
+    let tax = beforeTax * 0.1;
+
+    let html = `
+        <div class="payment-summary-title">
+            Payment Summary
+        </div>
+
+        <div class="payment-summary-row">
+            <div>Items ($${getNumberOfItems()}):</div>
+            <div class="payment-summary-money">$${(cost / 100).toFixed(2)}</div>
+        </div>
+
+        <div class="payment-summary-row">
+            <div>Shipping &amp; handling:</div>
+            <div class="payment-summary-money">$${(shippingCost / 100).toFixed(2)}</div>
+        </div>
+
+        <div class="payment-summary-row subtotal-row">
+            <div>Total before tax:</div>
+            <div class="payment-summary-money">$${(beforeTax / 100).toFixed(2)}</div>
+        </div>
+
+        <div class="payment-summary-row">
+            <div>Estimated tax (10%):</div>
+            <div class="payment-summary-money">$${(tax / 100).toFixed(2)}</div>
+        </div>
+
+        <div class="payment-summary-row total-row">
+            <div>Order total:</div>
+            <div class="payment-summary-money">$${((beforeTax + tax) / 100).toFixed(2)}</div>
+        </div>
+
+        <button class="place-order-button button-primary">
+            Place your order
+        </button>
+    `;
+
+    //Update grid
+    const paymentSumary = document.querySelector('.payment-summary');
+    paymentSumary.innerHTML = html;
+}
+
 function generateDeliveryOption(product) {
     let html = '';
     
@@ -98,7 +129,7 @@ function generateDeliveryOption(product) {
                         ${getDate(option.numberOfDay)}
                     </div>
                     <div class="delivery-option-price">
-                        FREE Shipping
+                        ${option.priceCents === `FREE` ? `FREE - Shipping` : `$${(Number(option.priceCents) / 100).toFixed(2)} - Shipping`}
                     </div>
                 </div>
             </div>
@@ -124,6 +155,7 @@ function addEventForDeleteProduct() {
             
             removeProductFromCart(button.dataset.productId);
             productContainer.remove();
+            generatePaymentSummary();
             updateCheckoutHeader();
         });
     });
@@ -145,6 +177,7 @@ function addEventForDeliveryOption() {
 
                 cartProducts[index].deliveryOption = Number(option.dataset.optionId);
                 updateDeliveryDate(option);
+                generatePaymentSummary();
                 localStorage.setItem('cartProduct', JSON.stringify(cartProducts));
             });
         });
@@ -156,3 +189,4 @@ function updateDeliveryDate(deliveryOption) {
     const deliveryDateElement = deliveryOption.closest('.cart-item-container').querySelector('.delivery-date');
     deliveryDateElement.innerHTML = `Delivery date: ${deliveryDate}`;
 }
+
