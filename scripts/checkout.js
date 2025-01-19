@@ -1,4 +1,4 @@
-import { cartProducts, removeProductFromCart } from "../data/cart.js";
+import { cartProducts, removeProductFromCart, deliveryOptions } from "../data/cart.js";
 import { getDate } from "./day.js";
 
 
@@ -27,20 +27,27 @@ export function addProductToCart(product) {
 }
 
 if (window.location.pathname === '/checkout.html') {
-    generateCheckOut();
+    generateOrderSummary();
     addEventForDeleteProduct();
     addEventForUpdateProduct();
+    addEventForDeliveryOption();
 }
 
 
-function generateCheckOut() {
+function generateOrderSummary() {
     let html = ``;
-    let cnt = 1;
     cartProducts.forEach(product => {
+        let option = null;
+        deliveryOptions.forEach(deliveryOption => {
+            if (product.deliveryOption === deliveryOption.optionId) {
+                option = deliveryOption;
+            }
+        });
+
         html += `
             <div class="cart-item-container">
                 <div class="delivery-date">
-                    Delivery date: ${getDate(10)}
+                    Delivery date: ${getDate(option.numberOfDay)}
                 </div>
 
                 <div class="cart-item-details-grid">
@@ -64,44 +71,11 @@ function generateCheckOut() {
                         <div class="delivery-options-title">
                             Choose a delivery option:
                         </div>
-                        <div class="delivery-option">
-                            <input type="radio" checked class="delivery-option-input" name="delivery-option-${cnt}">
-                            <div>
-                                <div class="delivery-option-date">
-                                    ${getDate(10)}
-                                </div>
-                                <div class="delivery-option-price">
-                                    FREE Shipping
-                                </div>
-                            </div>
-                        </div>
-                        <div class="delivery-option">
-                            <input type="radio" class="delivery-option-input" name="delivery-option-${cnt}">
-                            <div>
-                                <div class="delivery-option-date">
-                                    ${getDate(7)}
-                                </div>
-                                <div class="delivery-option-price">
-                                    $4.99 - Shipping
-                                </div>
-                            </div>
-                        </div>
-                        <div class="delivery-option">
-                            <input type="radio" class="delivery-option-input" name="delivery-option-${cnt}">
-                            <div>
-                                <div class="delivery-option-date">
-                                    ${getDate(3)}
-                                </div>
-                                <div class="delivery-option-price">
-                                    $9.99 - Shipping
-                                </div>
-                            </div>
-                        </div>
+                        ${generateDeliveryOption(product)}
                     </div>
                 </div>
             </div>
         `;
-        cnt++;
     });
 
     //Update grid
@@ -110,6 +84,28 @@ function generateCheckOut() {
 
     //Update header
     updateCheckoutHeader();
+}
+
+function generateDeliveryOption(product) {
+    let html = '';
+    
+    deliveryOptions.forEach(option => {
+        html += `
+            <div class="delivery-option" data-option-id="${option.optionId}">
+                <input type="radio" ${product.deliveryOption === option.optionId ? 'checked' : ''} class="delivery-option-input" name="delivery-option-${product.productId}">
+                <div>
+                    <div class="delivery-option-date">
+                        ${getDate(option.numberOfDay)}
+                    </div>
+                    <div class="delivery-option-price">
+                        FREE Shipping
+                    </div>
+                </div>
+            </div>
+        `;
+    });
+
+    return html;
 }
 
 function updateCheckoutHeader() {
@@ -135,4 +131,29 @@ function addEventForDeleteProduct() {
 
 function addEventForUpdateProduct() {
 
+}
+
+function addEventForDeliveryOption() {
+    const allDeliveryOptions = document.querySelectorAll('.delivery-options');
+    let index = 0;
+    allDeliveryOptions.forEach(options => {
+        const allOption = options.querySelectorAll('.delivery-option');
+        allOption.forEach(option => {
+            option.addEventListener('click', () => {
+                const inputOption = option.querySelector('.delivery-option-input');
+                inputOption.checked = true;
+
+                console.log(cartProducts);
+                cartProducts[index].deliveryOption = Number(option.dataset.optionId);
+                updateDeliveryDate(option);
+                localStorage.setItem('cartProduct', JSON.stringify(cartProducts));
+            });
+        });
+    });
+}
+
+function updateDeliveryDate(deliveryOption) {
+    const deliveryDate = deliveryOption.querySelector('.delivery-option-date').innerHTML;
+    const deliveryDateElement = deliveryOption.closest('.cart-item-container').querySelector('.delivery-date');
+    deliveryDateElement.innerHTML = `Delivery date: ${deliveryDate}`;
 }

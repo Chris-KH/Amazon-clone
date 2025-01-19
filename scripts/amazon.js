@@ -75,6 +75,7 @@ function addEventForAddButton() {
             const cartQuantity = document.querySelector('.cart-quantity');
             let product = Object.assign({}, addBut.dataset);
             product.quantity = quantity;
+            product.deliveryOption = 1;
             addProductToCart(product);
             cartQuantity.innerHTML = getNumberOfItems();
 

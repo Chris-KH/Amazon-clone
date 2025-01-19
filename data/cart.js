@@ -13,3 +13,18 @@ export function removeProductFromCart(productId) {
 
     localStorage.setItem('cartProduct', JSON.stringify(cartProducts));
 }
+
+export const deliveryOptions = [
+    {
+        optionId: 1,
+        numberOfDay: 10
+    },
+    {
+        optionId: 2,
+        numberOfDay: 7
+    },
+    {
+        optionId: 3,
+        numberOfDay: 3
+    }
+];
