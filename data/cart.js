@@ -14,6 +14,17 @@ export function removeProductFromCart(productId) {
     localStorage.setItem('cartProduct', JSON.stringify(cartProducts));
 }
 
+export function updateProductQuantity(productId, quantity) {
+    for (let i = 0; i < cartProducts.length; i++) {
+        if (cartProducts[i].productId === productId) {
+            cartProducts[i].quantity = quantity;
+            break;
+        }
+    }
+
+    localStorage.setItem('cartProduct', JSON.stringify(cartProducts));
+}
+
 export function getNumberOfItems() {
     let count = 0;
     cartProducts.forEach(product => {

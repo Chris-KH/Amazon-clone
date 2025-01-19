@@ -1,4 +1,4 @@
-import { cartProducts, removeProductFromCart, deliveryOptions, getNumberOfItems } from "../data/cart.js";
+import { cartProducts, removeProductFromCart, deliveryOptions, getNumberOfItems, updateProductQuantity } from "../data/cart.js";
 import { getDate } from "./day.js";
 
 generateOrderSummary();
@@ -6,6 +6,7 @@ generatePaymentSummary();
 addEventForDeleteProduct();
 addEventForUpdateProduct();
 addEventForDeliveryOption();
+
 
 function generateOrderSummary() {
     let html = ``;
@@ -34,7 +35,12 @@ function generateOrderSummary() {
                             $${(Number(product.quantity) * Number(product.priceCents) / 100).toFixed(2)}
                         </div>
                         <div class="product-quantity">
-                            <span>Quantity: <span class="quantity-label">${product.quantity}</span></span>
+                            <span>Quantity: 
+                                <span class="update-quantity-input"></span>
+                                <span class="quantity-label">
+                                    ${product.quantity}
+                                </span>
+                            </span>
                             <span class="update-quantity-link link-primary" data-product-id="${product.productId}">Update</span>
                             <span class="delete-quantity-link link-primary" data-product-id="${product.productId}">Delete</span>
                         </div>
@@ -162,13 +168,83 @@ function addEventForDeleteProduct() {
 }
 
 function addEventForUpdateProduct() {
+    const allProductQuantitys = document.querySelectorAll('.product-quantity');
 
+    allProductQuantitys.forEach(productQuantity => {
+        const quantityInput = productQuantity.querySelector('.update-quantity-input');
+        const quantityLabel = productQuantity.querySelector('.quantity-label');
+        const updateButton = productQuantity.querySelector('.update-quantity-link');
+        const productId = updateButton.dataset.productId;
+        
+        updateButton.addEventListener('click', () => {
+            if (updateButton.innerText === 'Update') {
+                updateButton.innerHTML = `Save`;
+                let inputTagQuantity = document.createElement('input');
+                inputTagQuantity.type = "number";
+                inputTagQuantity.classList = "quantity-input";
+                inputTagQuantity.value = Number(quantityLabel.innerText);
+                inputTagQuantity.min = 0;
+                inputTagQuantity.addEventListener('keypress', (event) => {
+                    if (event.key === 'Enter') {
+                        let quantityValue = quantityInput.querySelector('.quantity-input').value;
+                        if (quantityValue === '') quantityValue = '1'; 
+
+                        if (Number(quantityValue) < 0) {
+                            alert('Invalid quantity!!!');
+                            return;
+                        }
+
+                        updateButton.innerHTML = 'Update';
+                        quantityLabel.innerHTML = `${quantityValue}`;
+                        quantityInput.innerHTML = ``;
+
+                        if (Number(quantityValue) === 0) {
+                            removeProductFromCart(productId);
+                            productQuantity.closest('.cart-item-container').remove();
+                        }
+                        else {
+                            updateProductQuantity(productId, Number(quantityValue));
+                        }
+
+                        generatePaymentSummary();
+                        updateCheckoutHeader();
+                    }
+                });
+                
+                quantityInput.appendChild(inputTagQuantity);
+                quantityLabel.innerHTML = '';
+            }
+            else {
+                let quantityValue = quantityInput.querySelector('.quantity-input').value;
+                if (quantityValue === '') quantityValue = '1'; 
+
+                if (Number(quantityValue) < 0) {
+                    alert('Invalid quantity!!!');
+                    return;
+                }
+
+                updateButton.innerHTML = 'Update';
+                quantityLabel.innerHTML = `${quantityValue}`;
+                quantityInput.innerHTML = ``;
+
+                if (Number(quantityValue) === 0) {
+                    removeProductFromCart(productId);
+                    productQuantity.closest('.cart-item-container').remove();
+                }
+                else {
+                    updateProductQuantity(productId, Number(quantityValue));
+                }
+
+                generatePaymentSummary();
+                updateCheckoutHeader();
+            }
+        });
+    });
 }
 
 function addEventForDeliveryOption() {
     const allDeliveryOptions = document.querySelectorAll('.delivery-options');
     allDeliveryOptions.forEach((options, index) => {
-        console.log(index);
         const allOption = options.querySelectorAll('.delivery-option');
         allOption.forEach(option => {
             option.addEventListener('click', () => {
