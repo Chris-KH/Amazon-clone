@@ -135,15 +135,14 @@ function addEventForUpdateProduct() {
 
 function addEventForDeliveryOption() {
     const allDeliveryOptions = document.querySelectorAll('.delivery-options');
-    let index = 0;
-    allDeliveryOptions.forEach(options => {
+    allDeliveryOptions.forEach((options, index) => {
+        console.log(index);
         const allOption = options.querySelectorAll('.delivery-option');
         allOption.forEach(option => {
             option.addEventListener('click', () => {
                 const inputOption = option.querySelector('.delivery-option-input');
                 inputOption.checked = true;
 
-                console.log(cartProducts);
                 cartProducts[index].deliveryOption = Number(option.dataset.optionId);
                 updateDeliveryDate(option);
                 localStorage.setItem('cartProduct', JSON.stringify(cartProducts));
