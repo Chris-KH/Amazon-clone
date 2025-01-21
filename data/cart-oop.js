@@ -12,7 +12,7 @@ class Cart {
     removeProductFromCart(productId) {
         for (let i = 0; i < this.cartProducts.length; i++) {
             if (this.cartProducts[i].productId === productId) {
-                this.cartProducts.splice(i, 1);
+                this.cartProducts.splice(i, 1);   
                 break;
             }
         }
@@ -56,6 +56,4 @@ class Cart {
     }
 };
 
-const normalCart = new Cart('cartProduct');
-
-console.log(normalCart);
+export const normalCart = new Cart('cartProduct');

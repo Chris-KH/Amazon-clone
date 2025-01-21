@@ -1,6 +1,6 @@
-import { cartProducts, removeProductFromCart, deliveryOptions, getNumberOfItems, updateProductQuantity } from "../data/cart.js";
+import { deliveryOptions } from "../data/cart.js";
 import { getDate } from "./day.js";
-import '../data/cart-oop.js'
+import { normalCart } from "../data/cart-oop.js";
 
 generateOrderSummary();
 generatePaymentSummary();
@@ -11,7 +11,8 @@ addEventForDeliveryOption();
 
 function generateOrderSummary() {
     let html = ``;
-    cartProducts.forEach(product => {
+    
+    normalCart.cartProducts.forEach(product => {
         let option = null;
         deliveryOptions.forEach(deliveryOption => {
             if (product.deliveryOption === deliveryOption.optionId) {
@@ -33,7 +34,7 @@ function generateOrderSummary() {
                             ${product.productName}
                         </div>
                         <div class="product-price">
-                            $${(Number(product.quantity) * Number(product.priceCents) / 100).toFixed(2)}
+                            $${(Number(product.priceCents) / 100).toFixed(2)}
                         </div>
                         <div class="product-quantity">
                             <span>Quantity: 
@@ -68,12 +69,12 @@ function generateOrderSummary() {
 
 function generatePaymentSummary() {
     let cost = 0;
-    cartProducts.forEach(product => {
+    normalCart.cartProducts.forEach(product => {
         cost += Number(product.quantity) * Number(product.priceCents);
     });
 
     let shippingCost = 0;
-    cartProducts.forEach(product => {
+    normalCart.cartProducts.forEach(product => {
         deliveryOptions.forEach(option => {
             if (product.deliveryOption === option.optionId) {
                 shippingCost += (option.priceCents === 'FREE' ? 0 : Number(option.priceCents));
@@ -90,7 +91,7 @@ function generatePaymentSummary() {
         </div>
 
         <div class="payment-summary-row">
-            <div>Items ($${getNumberOfItems()}):</div>
+            <div>Items ($${normalCart.getNumberOfItems()}):</div>
             <div class="payment-summary-money">$${(cost / 100).toFixed(2)}</div>
         </div>
 
@@ -147,7 +148,7 @@ function generateDeliveryOption(product) {
 }
 
 function updateCheckoutHeader() {
-    const numItems = getNumberOfItems();
+    const numItems = normalCart.getNumberOfItems();
     const middleHeader = document.querySelector('.return-to-home-link');
     if (numItems <= 1) middleHeader.innerText = `${numItems} item`;
     else middleHeader.innerText = `${numItems} items`;
@@ -160,7 +161,7 @@ function addEventForDeleteProduct() {
         button.addEventListener('click', () => {
             const productContainer = button.closest('.cart-item-container');
             
-            removeProductFromCart(button.dataset.productId);
+            normalCart.removeProductFromCart(button.dataset.productId);
             productContainer.remove();
             generatePaymentSummary();
             updateCheckoutHeader();
@@ -200,15 +201,12 @@ function addEventForUpdateProduct() {
                         quantityInput.innerHTML = ``;
 
                         if (Number(quantityValue) === 0) {
-                            removeProductFromCart(productId);
+                            normalCart.removeProductFromCart(productId);
                             productQuantity.closest('.cart-item-container').remove();
                         }
                         else {
-                            updateProductQuantity(productId, Number(quantityValue));
+                            normalCart.updateProductQuantity(productId, Number(quantityValue));
                         }
-
-                        generatePaymentSummary();
-                        updateCheckoutHeader();
                     }
                 });
                 
@@ -229,16 +227,17 @@ function addEventForUpdateProduct() {
                 quantityInput.innerHTML = ``;
 
                 if (Number(quantityValue) === 0) {
-                    removeProductFromCart(productId);
+                    normalCart.removeProductFromCart(productId);
                     productQuantity.closest('.cart-item-container').remove();
                 }
                 else {
-                    updateProductQuantity(productId, Number(quantityValue));
+                    normalCart.updateProductQuantity(productId, Number(quantityValue));
                 }
-
-                generatePaymentSummary();
-                updateCheckoutHeader();
             }
+
+            //generateOrderSummary();
+            generatePaymentSummary();
+            updateCheckoutHeader();
         });
     });
 }
@@ -252,10 +251,10 @@ function addEventForDeliveryOption() {
                 const inputOption = option.querySelector('.delivery-option-input');
                 inputOption.checked = true;
 
-                cartProducts[index].deliveryOption = Number(option.dataset.optionId);
+                normalCart.cartProducts[index].deliveryOption = Number(option.dataset.optionId);
                 updateDeliveryDate(option);
                 generatePaymentSummary();
-                localStorage.setItem('cartProduct', JSON.stringify(cartProducts));
+                localStorage.setItem('cartProduct', JSON.stringify(normalCart.cartProducts));
             });
         });
     });
