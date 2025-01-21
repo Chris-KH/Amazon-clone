@@ -1,5 +1,6 @@
 import { cartProducts, removeProductFromCart, deliveryOptions, getNumberOfItems, updateProductQuantity } from "../data/cart.js";
 import { getDate } from "./day.js";
+import '../data/cart-oop.js'
 
 generateOrderSummary();
 generatePaymentSummary();
