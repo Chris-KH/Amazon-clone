@@ -1,8 +1,11 @@
-import { products } from "../data/products.js";
+import { products, loadProducts } from "../data/products.js";
 import { getNumberOfItems, addProductToCart } from "../data/cart.js"
 
-generateProductContainer();
-addEventForAddButton();
+loadProducts(() => {
+    generateProductContainer();
+    addEventForAddButton();
+});
+
 function generateProductContainer() {
     let cnt = 0;
     const productGrid = document.querySelector('.products-grid');

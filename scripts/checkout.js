@@ -1,6 +1,7 @@
 import { deliveryOptions } from "../data/cart.js";
 import { getDate } from "./day.js";
 import { normalCart } from "../data/cart-oop.js";
+//import '../data/backend-practice.js'
 
 generateOrderSummary();
 generatePaymentSummary();
